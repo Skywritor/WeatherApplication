@@ -3,10 +3,77 @@
     <head>
         <meta charset='UTF-8'>
         <title>Weather App</title>
+        <!-- Import Bootstrap -->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet"
+		 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+         integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+         crossorigin="anonymous">
+		<!-- Optional theme -->
+		<link rel="stylesheet"
+         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+         integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+         crossorigin="anonymous">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+         crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>Weather App</h1>
-        <h2>The weather today is: <pre id='current-weather'></pre></h2>
+        <div class='container'>
+            <div class='jumbotron'>
+                <h1 id='conditionId'>Rain</h1>
+                <p id='description'>Raining with a chance of meatballs</p>
+            </div>
+            <div class='row'>
+                <div class='col-md-12'>
+                    <img class='img-responsive'
+                     alt='A themed picture representing the current weather'
+                     src='https://pixabay.com/static/uploads/photo/2013/07/13/13/12/dog-160561_960_720.png'
+                     id='condition-picture'>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-md-4'>
+                    <h2>
+                        <span id='temperature-main'>64</span>&deg;
+                        <span id='temperature-unit'>F</span>
+                    </h2>
+                </div>
+                <div class='col-md-8'>
+                    <table class='table'>
+                        <tr>
+                            <td>
+                                <span id='location-cityName'>Orange</span>, 
+                                <span id='location-country'>United States</span>
+                            </td>
+                            <td>
+                                Lat:<span id='location-longitude'>89.2</span>, 
+                                Lon:<span id='location-latitude'>-122.3</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Pressure:
+                                <span id='pressure-main'>110</span>
+                                <span id='pressure-unit'>in</span>,
+                            </td>
+                            <td>
+                                Humidity: <span id='humidity'>30</span>%,
+                                Cloud Coverage:<span id='cloudCoverage'>60</span>%,
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Sunrise: <span id='sunrise'>5:42 AM</span>
+                            </td>
+                            <td>
+                                Sunset: <span id='sunset'>6:32 PM</span>
+                            </td>
+                    </table>
+                </div>
+            </div>
+        </div>
         <script type='text/javascript' src='main.js'></script>
     </body>
 </html>

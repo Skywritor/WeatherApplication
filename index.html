@@ -14,10 +14,6 @@
          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
          crossorigin="anonymous">
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-         crossorigin="anonymous"></script>
     </head>
     <body>
         <div class='container'>
@@ -41,35 +37,8 @@
                     </h2>
                 </div>
                 <div class='col-md-8'>
-                    <table class='table'>
-                        <tr>
-                            <td>
-                                <span id='location-cityName'>Orange</span>, 
-                                <span id='location-country'>United States</span>
-                            </td>
-                            <td>
-                                Lat:<span id='location-longitude'>89.2</span>, 
-                                Lon:<span id='location-latitude'>-122.3</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Pressure:
-                                <span id='pressure-main'>110</span>
-                                <span id='pressure-unit'>in</span>,
-                            </td>
-                            <td>
-                                Humidity: <span id='humidity'>30</span>%,
-                                Cloud Coverage:<span id='cloudCoverage'>60</span>%,
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Sunrise: <span id='sunrise'>5:42 AM</span>
-                            </td>
-                            <td>
-                                Sunset: <span id='sunset'>6:32 PM</span>
-                            </td>
+                    <table class='table' id="data-table">
+                      <!-- Javascript Table Insertion -->
                     </table>
                 </div>
             </div>

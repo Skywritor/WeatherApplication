@@ -33,6 +33,44 @@ var currentWeather = {
 };
 
 function initializeWeather(apiData, weatherObject) {
+
+  function timeConversion(seconds, countryName) {
+    var datetime = new Date(seconds*1000);
+    var minutes = datetime.getMinutes();
+    var hours, time;
+    // Prepend zero if minutes less than 10
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    // Check if US for necessary 12 hour conversion
+    if (countryName === "US") {
+      // Convert 24hr to 12hr time
+      hours = ((datetime.getHours() + 11) % 12) + 1;
+      time = hours + ":" + minutes;
+      // Return AM/PM based on hours
+      return (datetime.getHours() >= 12) ? time + " PM" : time + " AM";
+    } else {
+      hours = datetime.getHours();
+      return hours + ":" + minutes;
+    }
+  }
+
+  function formatCoordinate(coorObj) {
+    if (coorObj.lon) {
+      if (coorObj.lon < 0) {
+        return Math.abs(coorObj.lon) + "&deg; W";
+      } else {
+        return coorObj.lon + "&deg; E";
+      }
+    } else if (coorObj.lat){
+      if (coorObj.lat < 0) {
+        return Math.abs(coorObj.lat) + "&deg; S";
+      } else {
+        return coorObj.lat + "&deg; N";
+      }
+    }
+  }
+
   weatherObject.conditionId = apiData.weather[0].id;
   weatherObject.mainCondition = apiData.weather[0].main;
   weatherObject.description = apiData.weather[0].description;
@@ -57,11 +95,11 @@ function initializeWeather(apiData, weatherObject) {
   weatherObject.location.country = apiData.sys.country;
   weatherObject.location.cityName = apiData.name;
   weatherObject.location.cityId = apiData.id;
-  weatherObject.location.longitude = apiData.coord.lon;
-  weatherObject.location.latitude = apiData.coord.lat;
-  weatherObject.datetime = apiData.dt;
-  weatherObject.sunrise = apiData.sys.sunrise;
-  weatherObject.sunset = apiData.sys.sunset;
+  weatherObject.location.longitude = formatCoordinate({lon: apiData.coord.lon});
+  weatherObject.location.latitude = formatCoordinate({lat: apiData.coord.lat});
+  weatherObject.datetime = timeConversion(apiData.dt, apiData.sys.country);
+  weatherObject.sunrise = timeConversion(apiData.sys.sunrise, apiData.sys.country);
+  weatherObject.sunset = timeConversion(apiData.sys.sunset, apiData.sys.country);
 }
 
 function geolocationSuccess(pos) {
@@ -86,9 +124,9 @@ function geolocationSuccess(pos) {
           initializeWeather(weatherData, currentWeather);
           // Set currentWeather to display weather data
           console.log(request.response);
+          // Inject table
+          loadDataTable();
 
-          var weatherDisplay = document.getElementById("current-weather");
-          weatherDisplay.innerHTML = JSON.stringify(currentWeather);
       }
   };
 }
@@ -102,3 +140,36 @@ window.onload = function() {
   // Geolocation
   navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, {timeout: 20000});
 };
+
+
+function loadDataTable() {
+  var dataTable = document.getElementById("data-table");
+  dataTable.innerHTML =
+  "<tr>" +
+      "<td>" +
+          currentWeather.location.cityName + ", " +
+          currentWeather.location.country +
+      "</td>" +
+      "<td>" +
+          currentWeather.location.longitude + ", " +
+          currentWeather.location.latitude +
+      "</td>" +
+  "</tr>" +
+  "<tr>" +
+      "<td>" +
+        "Pressure: " + currentWeather.pressure.main +
+      "</td>" +
+      "<td>" +
+        "Humidity: " + currentWeather.humidity + "%, " +
+        "Cloud Coverage: " + currentWeather.cloudCoverage + "%" +
+      "</td>" +
+  "</tr>" +
+  "<tr>" +
+      "<td>" +
+          "Sunrise: " + currentWeather.sunrise +
+      "</td>" +
+      "<td>" +
+          "Sunset: " + currentWeather.sunset +
+      "</td>" +
+  "</tr>";
+}

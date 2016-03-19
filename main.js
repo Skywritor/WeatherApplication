@@ -71,15 +71,39 @@ function initializeWeather(apiData, weatherObject) {
     }
   }
 
+  function pressureConversion(pressure, countryName) {
+      var convertedPressure
+      if (countryName === 'US') {
+        convertedPressure = (pressure*0.0295299830714).toPrecision(4)
+        return convertedPressure + ' inHg'
+      }
+      else {
+          return (pressure).toString() + ' hPa'
+      }
+  }
+
+  function temperatureConversion(temperature, countryName) {
+      var convertedTemperature
+      fahrenheitCountries = ['US', 'BS', 'BZ', 'KY', 'PW']
+      if(fahrenheitCountries.indexOf(countryName) >= 0) {
+        convertedTemperature = Math.round((temperature*9/5)-459.67)
+        return (convertedTemperature).toString() + ' &deg;F'
+      }
+      else {
+        convertedTemperature = Math.round(temperature-273.15)
+        return (convertedTemperature).toString() + ' &deg;C'
+      }
+  }
+
   weatherObject.conditionId = apiData.weather[0].id;
   weatherObject.mainCondition = apiData.weather[0].main;
   weatherObject.description = apiData.weather[0].description;
-  weatherObject.temperature.main = apiData.main.temp;
-  weatherObject.temperature.min = apiData.main.temp_min;
-  weatherObject.temperature.max = apiData.main.temp_max;
-  weatherObject.pressure.main = apiData.main.pressure;
-  weatherObject.pressure.sea = apiData.main.sea_level;
-  weatherObject.pressure.ground = apiData.main.grnd_level;
+  weatherObject.temperature.main = temperatureConversion(apiData.main.temp, apiData.sys.country);
+  weatherObject.temperature.min = temperatureConversion(apiData.main.temp_min, apiData.sys.country);
+  weatherObject.temperature.max = temperatureConversion(apiData.main.temp_max, apiData.sys.country);
+  weatherObject.pressure.main = pressureConversion(apiData.main.pressure, apiData.sys.country);
+  weatherObject.pressure.sea = pressureConversion(apiData.main.sea_level, apiData.sys.country);
+  weatherObject.pressure.ground = pressureConversion(apiData.main.grnd_level, apiData.sys.country);
   weatherObject.humidity = apiData.main.humidity;
   weatherObject.wind.speed = apiData.wind.speed;
   weatherObject.wind.degree = apiData.wind.deg;
@@ -100,6 +124,64 @@ function initializeWeather(apiData, weatherObject) {
   weatherObject.datetime = timeConversion(apiData.dt, apiData.sys.country);
   weatherObject.sunrise = timeConversion(apiData.sys.sunrise, apiData.sys.country);
   weatherObject.sunset = timeConversion(apiData.sys.sunset, apiData.sys.country);
+}
+
+function loadWeatherCondition() {
+  var weatherCondition = document.getElementById("weather-condition");
+  weatherCondition.innerHTML = 
+  "<h1 id='conditionId'>" +
+      currentWeather.mainCondition +
+  "</h1>" +
+  "<p id='description'>" +
+      currentWeather.description +
+  "</p>";
+}
+
+function loadTemperatureData() {
+  var temperatureMain = document.getElementById("temperature-main");
+  temperatureMain.innerHTML = currentWeather.temperature.main;
+}
+
+function loadDataTable() {
+  var dataTable = document.getElementById("data-table");
+  dataTable.innerHTML =
+  "<tr>" +
+      "<td>" +
+          currentWeather.location.cityName + ", " +
+          currentWeather.location.country +
+      "</td>" +
+      "<td>" +
+          currentWeather.location.longitude + ", " +
+          currentWeather.location.latitude +
+      "</td>" +
+  "</tr>" +
+  "<tr>" +
+      "<td>" +
+          'Low:' +
+          currentWeather.temperature.min +
+      "</td>" +
+      "<td>" +
+          'High:' +
+          currentWeather.temperature.max +
+      "</td>" +
+  "</tr>" +
+  "<tr>" +
+      "<td>" +
+        "Pressure: " + currentWeather.pressure.main +
+      "</td>" +
+      "<td>" +
+        "Humidity: " + currentWeather.humidity + "%, " +
+        "Cloud Coverage: " + currentWeather.cloudCoverage + "%" +
+      "</td>" +
+  "</tr>" +
+  "<tr>" +
+      "<td>" +
+          "Sunrise: " + currentWeather.sunrise +
+      "</td>" +
+      "<td>" +
+          "Sunset: " + currentWeather.sunset +
+      "</td>" +
+  "</tr>";
 }
 
 function geolocationSuccess(pos) {
@@ -125,6 +207,8 @@ function geolocationSuccess(pos) {
           // Set currentWeather to display weather data
           console.log(request.response);
           // Inject table
+          loadWeatherCondition();
+          loadTemperatureData();
           loadDataTable();
 
       }
@@ -140,36 +224,3 @@ window.onload = function() {
   // Geolocation
   navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, {timeout: 20000});
 };
-
-
-function loadDataTable() {
-  var dataTable = document.getElementById("data-table");
-  dataTable.innerHTML =
-  "<tr>" +
-      "<td>" +
-          currentWeather.location.cityName + ", " +
-          currentWeather.location.country +
-      "</td>" +
-      "<td>" +
-          currentWeather.location.longitude + ", " +
-          currentWeather.location.latitude +
-      "</td>" +
-  "</tr>" +
-  "<tr>" +
-      "<td>" +
-        "Pressure: " + currentWeather.pressure.main +
-      "</td>" +
-      "<td>" +
-        "Humidity: " + currentWeather.humidity + "%, " +
-        "Cloud Coverage: " + currentWeather.cloudCoverage + "%" +
-      "</td>" +
-  "</tr>" +
-  "<tr>" +
-      "<td>" +
-          "Sunrise: " + currentWeather.sunrise +
-      "</td>" +
-      "<td>" +
-          "Sunset: " + currentWeather.sunset +
-      "</td>" +
-  "</tr>";
-}

@@ -32,6 +32,24 @@ var currentWeather = {
     sunset: null
 };
 
+// See weather-codes.txt for code descriptions
+var directories = {
+  thunderstorm: [200, 201, 202, 210, 211, 212, 221, 230, 231, 232],
+  drizzle: [300, 301, 302, 310, 311, 312, 313, 314, 321],
+  rain: [500, 501, 502, 503, 504, 511, 520, 521, 522, 531],
+  snow: [600, 601, 602, 611, 612, 615, 616, 620, 621, 622, 906],
+  haze: [701, 721, 741],
+  dust: [711, 731, 751, 761, 762],
+  tornado: [771, 781, 900],
+  clear: [800, 951, 952, 953, 954, 955],
+  clouds: [801, 802, 803, 804],
+  windy: [905, 956, 957, 958],
+  hot: [904],
+  cold: [903],
+  storm: [901, 902, 959, 960, 961, 962]
+};
+
+
 function initializeWeather(apiData, weatherObject) {
 
   function timeConversion(seconds, countryName) {
@@ -128,13 +146,14 @@ function initializeWeather(apiData, weatherObject) {
 
 function loadWeatherCondition() {
   var weatherCondition = document.getElementById("weather-condition");
-  weatherCondition.innerHTML = 
+  weatherCondition.innerHTML =
   "<h1 id='conditionId'>" +
+      currentWeather.temperature.main + " " +
       currentWeather.mainCondition +
-  "</h1>" +
-  "<p id='description'>" +
-      currentWeather.description +
-  "</p>";
+  "</h1>";
+  if (currentWeather.mainCondition.toLowerCase() !== currentWeather.description.toLowerCase()) {
+    weatherCondition.innerHTML += "<h2>" + currentWeather.description + "</h2>";
+  }
 }
 
 function loadTemperatureData() {
@@ -157,11 +176,11 @@ function loadDataTable() {
   "</tr>" +
   "<tr>" +
       "<td>" +
-          'Low:' +
+          'Low: ' +
           currentWeather.temperature.min +
       "</td>" +
       "<td>" +
-          'High:' +
+          'High: ' +
           currentWeather.temperature.max +
       "</td>" +
   "</tr>" +

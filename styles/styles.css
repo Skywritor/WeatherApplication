@@ -1,3 +1,13 @@
+/* body tag starts off hidden */
+body {
+  opacity: 0;
+  /* Set transition when opacity changes */
+  -webkit-transition: opacity ease 0.8s;
+  -moz-transition: opacity ease 0.8s;
+  -o-transition: opacity ease 0.8s;
+  transition: opacity ease 0.8s;
+}
+
 #condition-picture {
     width: 90%;
     margin: 20px auto;

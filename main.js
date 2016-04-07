@@ -300,6 +300,8 @@ function geolocationSuccess(pos) {
           loadDataTable();
           loadImage();
           setColor(weatherData);
+          // Once everything is properly loaded fade-in body
+          document.body.style.opacity = 1;
       }
   };
 }

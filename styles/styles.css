@@ -1,0 +1,55 @@
+#condition-picture {
+    width: 90%;
+    margin: 20px auto;
+}
+
+#weather-data {
+    padding: 20px 70px;
+}
+
+#temperature-main {
+    font-size: 5em;
+    text-align: center;
+}
+
+#weather-condition h1 {
+    font-size: 5em
+}
+
+#weather-condition p {
+    font-size: 3em
+}
+
+#data-table td{
+    font-size: 1.3em;
+    padding-left: 30px;
+}
+
+@media (max-width: 1200px) {
+    #weather-condition {
+        margin-bottom: 0px;
+    }
+    .container {
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #condition-picture {
+        margin-top: 0px;
+        width: 100%;
+    }
+
+    #weather-data {
+        width: 100%;
+        padding: 20px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    #data-table td{
+        font-size: 1.0em;
+        padding-left: 15px;
+    }
+}

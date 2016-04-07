@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>Weather App</title>
         <!-- Import Bootstrap -->
 		<!-- Latest compiled and minified CSS -->
@@ -14,6 +15,8 @@
          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
          crossorigin="anonymous">
+        <!-- Custom theme -->
+        <link rel="stylesheet" href="styles/styles.css">
     </head>
     <body>
         <div class='container'>
@@ -27,13 +30,11 @@
                      id='condition-picture'>
                 </div>
             </div>
-            <div class='row'>
-                <div class='col-md-4'>
-                    <h2>
-                        <span id='temperature-main'></span>
-                    </h2>
+            <div class='row' id='weather-data'>
+                <div class='col-md-4 col-md-push-8'>
+                    <h3 id='temperature-main'></h3>
                 </div>
-                <div class='col-md-8'>
+                <div class='col-md-8 col-md-pull-4'>
                     <table class='table' id="data-table">
                       <!-- Javascript Table Insertion -->
                     </table>

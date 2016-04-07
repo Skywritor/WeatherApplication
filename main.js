@@ -201,7 +201,6 @@ function loadWeatherCondition() {
   var weatherCondition = document.getElementById("weather-condition");
   weatherCondition.innerHTML =
   "<h1 id='conditionId'>" +
-      currentWeather.temperature.main + " " +
       currentWeather.mainCondition +
   "</h1>";
   if (currentWeather.mainCondition.toLowerCase() !== currentWeather.description.toLowerCase()) {
@@ -239,10 +238,10 @@ function loadDataTable() {
   "</tr>" +
   "<tr>" +
       "<td>" +
-        "Pressure: " + currentWeather.pressure.main +
+        "Pressure: " + "<br>" + currentWeather.pressure.main +
       "</td>" +
       "<td>" +
-        "Humidity: " + currentWeather.humidity + "%, " +
+        "Humidity: " + currentWeather.humidity + "%, " + "<br>" +
         "Cloud Coverage: " + currentWeather.cloudCoverage + "%" +
       "</td>" +
   "</tr>" +

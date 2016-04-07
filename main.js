@@ -28,8 +28,7 @@ var currentWeather = {
         latitude: null
     },
     datetime: null,
-    sunrise: null,
-    sunset: null
+    sunrise: null, sunset: null
 };
 
 function loadImage() {
@@ -255,6 +254,24 @@ function loadDataTable() {
   "</tr>";
 }
 
+function setColor(apiData) {
+    var now = new Date();
+    var sunrise = new Date(apiData.sys.sunrise * 1000);
+    var sunset = new Date(apiData.sys.sunset * 1000);
+    if(now.getHours() > sunset.getHours() ||
+       now.getHours() < sunrise.getHours() ||
+       now.getHours() === sunset.getHours() &&
+       now.getMinutes() > sunset.getMinutes() ||
+       now.getHours() === sunrise.getHours() &&
+       now.getMinutes() < sunrise.getMinutes()) {
+       var pageBody = document.body
+       pageBody.style.backgroundColor = "black"
+       pageBody.style.color = "rgba(255, 255, 255, .85)"
+       var jumbotron = document.getElementById('weather-condition')
+       jumbotron.style.backgroundColor = "rgba(255, 255, 255, .3)"
+    }
+}
+
 function geolocationSuccess(pos) {
   // Set up api url
   var url = 'http://api.openweathermap.org/data/2.5/weather';
@@ -282,6 +299,7 @@ function geolocationSuccess(pos) {
           loadTemperatureData();
           loadDataTable();
           loadImage();
+          setColor(weatherData);
       }
   };
 }

@@ -264,9 +264,9 @@ function setColor(apiData) {
        now.getMinutes() > sunset.getMinutes() ||
        now.getHours() === sunrise.getHours() &&
        now.getMinutes() < sunrise.getMinutes()) {
-       var pageBody = document.body
-       pageBody.style.backgroundColor = "black"
-       pageBody.style.color = "rgba(255, 255, 255, .85)"
+       var contentWrapper = document.getElementById("content-wrapper");
+       contentWrapper.style.backgroundColor = "black"
+       contentWrapper.style.color = "rgba(255, 255, 255, .85)"
        var jumbotron = document.getElementById('weather-condition')
        jumbotron.style.backgroundColor = "rgba(255, 255, 255, .3)"
     }
@@ -300,6 +300,11 @@ function geolocationSuccess(pos) {
           loadDataTable();
           loadImage();
           setColor(weatherData);
+          // Once everything is properly loaded fade-in body
+          document.getElementById("content-wrapper").style.opacity = 1;
+          // Remove canvas element from DOM
+          var canvas = document.querySelector("canvas");
+          document.body.removeChild(canvas);
       }
   };
 }
@@ -310,6 +315,92 @@ function geolocationError(err) {
 }
 
 window.onload = function() {
+  initAnimation();
   // Geolocation
   navigator.geolocation.getCurrentPosition(geolocationSuccess, geolocationError, {timeout: 20000});
 };
+
+
+// Animation Code below
+function initAnimation() {
+  var canvas = document.createElement("canvas");
+  canvas.width = 300;
+  canvas.height = 200;
+  canvas.style.display = "block";
+  canvas.style.margin = "100px auto";
+  canvas.style.Zindex = 50;
+  var ctx = canvas.getContext("2d");
+  var wrapper = document.getElementById("content-wrapper");
+  document.body.insertBefore(canvas, wrapper);
+  var centerX = canvas.width/2;
+  var centerY = canvas.height/2;
+
+  function drawCloudStroke(x, y, size, color) {
+   ctx.save();
+   ctx.beginPath();
+   ctx.moveTo((x-30+size*1.2), y-40);
+   ctx.arc(x-30, y-40, size*1.2, 0, Math.PI*2);
+   ctx.moveTo((x+60+size), y+10);
+   ctx.arc(x+60, y+10, size, 0, Math.PI*2);
+   ctx.moveTo((x-60+size), y+10);
+   ctx.arc(x-60, y+10, size, 0, Math.PI*2);
+   ctx.moveTo((x+size), y+10);
+   ctx.arc(x, y+10, size, 0, Math.PI*2);
+   ctx.moveTo((x+30+size), y-35);
+   ctx.arc(x+30, y-35, size, 0, Math.PI*2);
+   ctx.lineWidth = 30;
+   ctx.strokeStyle = "rgb(51, 51, 51)";
+   ctx.stroke();
+   ctx.globalCompositeOperation = "destination-out";
+   ctx.fill();
+   ctx.restore();
+  }
+
+  function drawCloudMask(x, y, size) {
+   ctx.save();
+   ctx.beginPath();
+   ctx.moveTo((x-30+size*1.2), y-40);//
+   ctx.arc(x-30, y-40, size*1.2, 0, Math.PI*2);
+   ctx.moveTo((x+60+size), y+10);//
+   ctx.arc(x+60, y+10, size, 0, Math.PI*2);
+   ctx.moveTo((x-60+size), y+10);//
+   ctx.arc(x-60, y+10, size, 0, Math.PI*2);
+   ctx.moveTo((x+size), y+10);//
+   ctx.arc(x, y+10, size, 0, Math.PI*2);
+   ctx.moveTo((x+30+size), y-35);//
+   ctx.arc(x+30, y-35, size, 0, Math.PI*2);
+   ctx.clip();
+   fillMask();
+   ctx.restore();
+  }
+
+  var fullMask = centerY-425;
+  var currentFill = centerY+180;
+
+  function fillMask() {
+   ctx.fillStyle="rgba(51, 51, 51, 0.7)"
+   ctx.fillRect(centerX-200, currentFill, 500, 300);
+  }
+
+  function loadAnimation() {
+   // Define requestAnimationFrame w/ vendor prefixes
+   var requestAnimationFrame = window.requestAnimationFrame ||
+                               window.webkitRequestAnimationFrame ||
+                               window.mozRequestAnimationFrame ||
+                               window.mozRequestAnimationFrame;
+   // Animate fill color change
+   if (currentFill > fullMask) {
+    currentFill -= 2;
+   } else {
+    currentFill = centerY+180;
+   }
+   ctx.clearRect(0, 0, canvas.width, canvas.height);
+   ctx.save();
+   drawCloudStroke(centerX, centerY+15, 34);
+   drawCloudMask(centerX, centerY+15, 35);
+   ctx.restore();
+   requestAnimationFrame(loadAnimation);
+  }
+
+  loadAnimation();
+}

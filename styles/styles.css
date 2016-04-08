@@ -1,3 +1,14 @@
+/* body tag starts off hidden */
+#content-wrapper {
+  overflow-x: hidden;
+  /* Set transition when opacity changes */
+  -webkit-transition: opacity ease 1s;
+  -moz-transition: opacity ease 1s;
+  -o-transition: opacity ease 1s;
+  transition: opacity ease 1s;
+  opacity: 0;
+}
+
 #condition-picture {
     width: 90%;
     margin: 20px auto;
@@ -28,6 +39,7 @@
 @media (max-width: 1200px) {
     #weather-condition {
         margin-bottom: 0px;
+        border-radius: 0;
     }
     .container {
         width: 100%;

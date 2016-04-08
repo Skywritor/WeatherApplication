@@ -39,6 +39,7 @@
 @media (max-width: 1200px) {
     #weather-condition {
         margin-bottom: 0px;
+        border-radius: 0;
     }
     .container {
         width: 100%;

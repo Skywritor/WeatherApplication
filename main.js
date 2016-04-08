@@ -264,9 +264,9 @@ function setColor(apiData) {
        now.getMinutes() > sunset.getMinutes() ||
        now.getHours() === sunrise.getHours() &&
        now.getMinutes() < sunrise.getMinutes()) {
-       var pageBody = document.body
-       pageBody.style.backgroundColor = "black"
-       pageBody.style.color = "rgba(255, 255, 255, .85)"
+       var contentWrapper = document.getElementById("content-wrapper");
+       contentWrapper.style.backgroundColor = "black"
+       contentWrapper.style.color = "rgba(255, 255, 255, .85)"
        var jumbotron = document.getElementById('weather-condition')
        jumbotron.style.backgroundColor = "rgba(255, 255, 255, .3)"
     }
@@ -301,7 +301,7 @@ function geolocationSuccess(pos) {
           loadImage();
           setColor(weatherData);
           // Once everything is properly loaded fade-in body
-          document.body.style.opacity = 1;
+          document.getElementById("content-wrapper").style.opacity = 1;
       }
   };
 }
